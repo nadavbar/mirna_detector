@@ -3,13 +3,15 @@
 import sys
 import re
 import time 
+from os import path
 from random import shuffle
 
 expression = '((hsa|mmu|\b)?-?(miRNA-|miR|\(miR\)|micoRNA|hsa-let|let-|microRNA-|micro ribonucleic acid)(-|\s|\d)?((-|\w|\*|\/)*\d+(-|\w|\/)*)+\*?)'
 extraction = '(hsa-(mir|let)-\d+(-|\w|\/)*)+'
 
 mirnas = []
-with open('data/mirna.txt') as f:
+dataFilePath = path.join(path.dirname(path.realpath(__file__)), 'data/mirna.txt')
+with open(dataFilePath) as f:
 
     content = f.readlines()
     for line in content:
@@ -129,49 +131,3 @@ def validate(sentence):
         parsedResults += values
 
     return detected
-
-
-def simpleTest(sentence):
-    print validate('miR-26a/b')
-    print validate('let-7')
-    print validate('hsa-mir-33')
-    print validate('hsa')
-    print validate('Hepatocytes contain abundant miR-122 and damage of hepatocytes caused by inflammation due to virus infection or cancer would be expected to release significant amount of this miRNA into the circulation.')
-    results = validate("""
-Perhaps the most interesting result was the upregulation of let-7f upon treatment with letrozole, as it inhibits the expression of the aromatase gene ().
-In a study to identify estrogen-regulated miRNAs, a group of miRNAs was shown to have elevated expression upon combined treatment of tamoxifen and exemestane, including miR-21, miR-181b, miR-26a/b, miR-27b, and miR-23b.
-Expression of miR-101 is thus important for estrogen-independent growth mediated by the PI3K/Akt pathway, which could be important for resistance to both tamoxifen and AIs.
-Upon analysis of clinical data from The Cancer Genome Atlas, it was clear that let-7c and HER2 were inversely correlated in luminal A breast tumors and that low expression of the let-7c/miR-99a/miR-125b cluster was associated with worse overall survival compared with patients who had high expression of this cluster.
-When compared with LTEDaro cells and cells treated only with testosterone, letrozole-resistant cells overexpressed miR-128a suggesting miR-128a plays a role in AI resistance.
-all my microRNAs hhv6b-miR-Ro6-4-3p and miR-155
-""")
-    
-
-
-def bigTest():
-    sentences = ''
-    with open('tests/sentences.txt') as thefile:
-        sentences = thefile.readlines()
-
-    shuffle(sentences)
-    for sentence in sentences:
-        print '\n' + '*'*50
-        print sentence
-        print '-    results: ',
-        print validate(sentence)
-        time.sleep(5)
-
-
-def read_input(file):
-    for sentence in file:
-        yield sentence
-
-
-def main():
-    for sentence in read_input(sys.stdin):
-        print validate(sentence),
-        print ',',
-
-
-if __name__ == '__main__':
-    main()

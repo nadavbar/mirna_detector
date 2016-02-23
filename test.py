@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from mirna_detector import validate
+from __init__ import validate
 
 total = 0
 errors = 0
