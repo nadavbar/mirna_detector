@@ -131,3 +131,9 @@ def validate(sentence):
         parsedResults += values
 
     return detected
+
+def is_mirna(text):
+    values = splitter(text)
+    values = filterMirnas(values)
+    return (len(values) > 0)
+    
